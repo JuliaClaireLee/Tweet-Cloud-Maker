@@ -36,6 +36,8 @@ require(ggplot2)
 require(ggplot2)
 require(ggforce)
 require(devtools)
+library(tm)
+
 require(shinythemes)
 searchtweet<-function(x){
     c<- search_tweets(x, n=20000, include_rts = FALSE)
