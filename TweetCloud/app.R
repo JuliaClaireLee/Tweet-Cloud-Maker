@@ -27,8 +27,6 @@ library(ggpubr)
 library(tidyverse)
 library(wordcloud)
 library(RColorBrewer)
-devtools::install_github("karthik/wesanderson")
-library("wesanderson")
 #install.packages("RCurl")
 library(RCurl)
 #install.packages("maps")
@@ -57,9 +55,7 @@ ui <- fluidPage(theme = shinytheme("united"),
                     
                 ),
                 mainPanel(
-                    plotOutput("distPlot"),
-                    plotOutput("Plot"),
-                    plotOutput("Plot2")
+                    plotOutput("distPlot")
                 )
                 
                 )
@@ -72,8 +68,6 @@ server <- function(input, output) {
     output$distPlot <- renderPlot({
         rt <- searchtweet(input$obs1)
         tidy_tweets <-  rt %>% # pipe data frame  # only include original tweets
-            select(status_id, 
-                   text)%>% # select variables of interest
             unnest_tokens(word, text) # splits column in one token per row format
         
         my_stop_words <- tibble( #construct a dataframe
@@ -92,7 +86,7 @@ server <- function(input, output) {
             bind_rows(my_stop_words) # here we are connecting two data frames
         
         # Let's see if it worked
-        view(all_stop_words)
+        
         
         # Remove numbers
         no_numbers <- tidy_tweets %>%
@@ -122,22 +116,7 @@ server <- function(input, output) {
         colorlist <- basecolors[ match(group,unique(group)) ]
         wordcloud(wordz, max.words = Inf, scale = c(4.5,0.21913127975125),random.order=FALSE,rot.per=.15, colors=colorlist)
     })
-    output$Plot <- renderPlot({
-        rt <- searchtweet(input$obs1)
-        ts_plot(rt)
-        }) 
-    output$Plot2 <- renderPlot({
-        rt <- geotweet(input$obs1)
-        rt <- lat_lng(rt)
-        
-        ## plot state boundaries
-        par(mar = c(0, 0, 0, 0))
-        maps::map("state", lwd = .25)
-        
-        ## plot lat and lng points onto state map
-        with(rt, points(lng, lat, pch = 20, cex = .75, col = rgb(0, .3, .7, .75)))
-        
-    })
+    
 }
 
 # Run the application 

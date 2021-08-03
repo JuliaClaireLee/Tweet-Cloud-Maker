@@ -1,0 +1,12 @@
+name: TweetCloud
+title: TweetCloud
+username:
+account: julia-lee
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 4452895
+bundleId: 4884871
+url: https://julia-lee.shinyapps.io/TweetCloud/
+when: 1628017975.54963
+asMultiple: FALSE
+asStatic: FALSE
